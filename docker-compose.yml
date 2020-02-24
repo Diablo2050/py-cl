@@ -1,0 +1,30 @@
+version: "3"
+services: 
+    rabbitmq_min:
+        hostname: rabbit
+        image: rabbitmq:3.7-management-alpine
+        volumes: 
+            - rabbit-dir:/var/lib/rabbitmq 
+        environment:
+            - RABBITMQ_DEFAULT_USER=amr
+            - RABBITMQ_DEFAULT_PASS=admin
+            - RABBITMQ_NODENAME=node1
+            - RABBITMQ_DEFAULT_VHOST=celery
+        ports:
+            - "5673:5672"
+            - "15672:15672"
+    redis_min:
+        #image: 'bitnami/redis:latest'
+        image: redis:5.0.7-buster
+        volumes: 
+            - redis-dir:/data
+        environment:
+          - ALLOW_EMPTY_PASSWORD=yes
+    app_min:
+        image: diablo2050/simpleflask:latest
+        ports:
+            - 5000:5000
+            - 5555:5555
+volumes:
+    rabbit-dir:
+    redis-dir:
